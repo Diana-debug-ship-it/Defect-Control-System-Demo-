@@ -35,8 +35,9 @@ public class FrameCheckEntity {
     @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 
-    @Column(name = "has_defect", nullable = false)
-    private Boolean hasDefect;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private QualityStatus status;
 
     @Column(name = "confidence", nullable = false)
     private Double confidence;
