@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: quality-control-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: postgres
+    username: postgres
+    url: jdbc:postgresql://localhost:5436/postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8080
