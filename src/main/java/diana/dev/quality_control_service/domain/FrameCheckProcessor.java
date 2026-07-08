@@ -20,7 +20,7 @@ public class FrameCheckProcessor {
     public LineStatsDto processStats() {
 
         Long totalChecked = repository.count();
-        Long totalDefects = repository.countByHasDefectTrue();
+        Long totalDefects = repository.countByStatus(QualityStatus.DEFECT);
 
         Double defectRate = totalChecked > 0
                 ? ((double) totalDefects/totalChecked) * 100
