@@ -1,11 +1,14 @@
 package diana.dev.quality_control_service.domain;
 
+import diana.dev.quality_control_service.api.FrameResultEvent;
 import diana.dev.quality_control_service.api.FrameUIDto;
 import diana.dev.quality_control_service.api.LineStatsDto;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -45,5 +48,20 @@ public class FrameCheckProcessor {
                         entity.getTimestamp().format(formatter),
                         entity.getConfidence())
                 ).toList();
+    }
+
+    @Transactional
+    public void saveResult(FrameResultEvent event) {
+
+        FrameCheckEntity entity = new FrameCheckEntity();
+        entity.setFrameId(event.frameId());
+        entity.setTimestamp(LocalDateTime.now());
+        entity.setConfidence(event.confidence());
+
+        QualityStatus status = event.hasDefect() ? QualityStatus.DEFECT : QualityStatus.NORMAL;
+        entity.setStatus(status);
+
+        repository.save(entity);
+        log.info("Рама {} успешно сохранена со статусом {}", event.frameId(), status);
     }
 }

@@ -4,9 +4,7 @@ import diana.dev.quality_control_service.domain.FrameCheckProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +16,15 @@ import java.util.List;
 public class QualityControlController {
 
     private final FrameCheckProcessor processor;
+
+    @PostMapping("/test-receive")
+    public ResponseEntity<String> testReceive(@RequestBody FrameResultEvent event) {
+        log.info("Тестовый запуск: получили данные от нейросети: {}", event);
+
+        processor.saveResult(event);
+
+        return ResponseEntity.ok("Данные успешно обработаны процессором!");
+    }
 
     @GetMapping("/stats")
     public ResponseEntity<LineStatsDto> getStats() {
