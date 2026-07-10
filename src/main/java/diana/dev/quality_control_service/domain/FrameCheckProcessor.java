@@ -66,4 +66,18 @@ public class FrameCheckProcessor {
         repository.save(entity);
         log.info("Рама {} успешно сохранена со статусом {}", event.frameId(), status);
     }
+
+    public void processFrameResultCheckEvent(FrameResultEvent event) {
+        FrameCheckEntity entity = new FrameCheckEntity();
+        entity.setFrameId(event.frameId());
+        entity.setTimestamp(LocalDateTime.now());
+        entity.setConfidence(event.confidence());
+        entity.setDefectType(event.defectType());
+
+        QualityStatus status = event.hasDefect() ? QualityStatus.DEFECT : QualityStatus.NORMAL;
+        entity.setStatus(status);
+
+        repository.save(entity);
+        log.info("Frame {} successfully saved. Status: {}", event.frameId(), status);
+    }
 }
