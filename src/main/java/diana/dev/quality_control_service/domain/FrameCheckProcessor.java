@@ -45,6 +45,7 @@ public class FrameCheckProcessor {
                 .map(entity -> new FrameUIDto(
                         entity.getFrameId(),
                         entity.getStatus(),
+                        entity.getDefectType(),
                         entity.getTimestamp().format(formatter),
                         entity.getConfidence())
                 ).toList();
@@ -57,6 +58,7 @@ public class FrameCheckProcessor {
         entity.setFrameId(event.frameId());
         entity.setTimestamp(LocalDateTime.now());
         entity.setConfidence(event.confidence());
+        entity.setDefectType(event.defectType());
 
         QualityStatus status = event.hasDefect() ? QualityStatus.DEFECT : QualityStatus.NORMAL;
         entity.setStatus(status);

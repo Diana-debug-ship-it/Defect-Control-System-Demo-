@@ -39,6 +39,9 @@ public class FrameCheckEntity {
     @Column(name = "status", nullable = false)
     private QualityStatus status;
 
+    @Column(name = "defect_type", nullable = false)
+    private String defectType;
+
     @Column(name = "confidence", nullable = false)
     private Double confidence;
 
