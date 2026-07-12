@@ -19,6 +19,7 @@ import java.util.List;
 public class FrameCheckProcessor {
 
     private final FrameCheckRepository repository;
+    private final SseNotificationService notificationService;
 
     public LineStatsDto processStats() {
 
@@ -34,11 +35,14 @@ public class FrameCheckProcessor {
                 .totalChecked(totalChecked)
                 .defectRate(defectRate)
                 .build();
+    }
 
+    private String formatTime(LocalDateTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return time.format(formatter);
     }
 
     public List<FrameUIDto> processHistory() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         return repository.findTop10ByOrderByTimestampDesc()
                 .stream()
@@ -46,7 +50,7 @@ public class FrameCheckProcessor {
                         entity.getFrameId(),
                         entity.getStatus(),
                         entity.getDefectType(),
-                        entity.getTimestamp().format(formatter),
+                        formatTime(entity.getTimestamp()),
                         entity.getConfidence())
                 ).toList();
     }
@@ -79,5 +83,18 @@ public class FrameCheckProcessor {
 
         repository.save(entity);
         log.info("Frame {} successfully saved. Status: {}", event.frameId(), status);
+        sendToFrontend(entity);
+    }
+
+    public void sendToFrontend(FrameCheckEntity entity) {
+        FrameUIDto uiDto = new FrameUIDto(
+                entity.getFrameId(),
+                entity.getStatus(),
+                entity.getDefectType(),
+                formatTime(entity.getTimestamp()),
+                entity.getConfidence()
+                );
+
+        notificationService.broadcast(uiDto);
     }
 }
