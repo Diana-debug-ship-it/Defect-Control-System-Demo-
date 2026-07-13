@@ -9,7 +9,8 @@
 2. **Обработка данных (Данный сервис)**: Компонент `FrameResultEventConsumer` асинхронно считывает JSON-события. Сервисный слой трансформирует их в доменные сущности `FrameCheckEntity`, классифицирует статус (`NORMAL` / `DEFECT`) и сохраняет в базу данных через Spring Data JPA.
 3. **Верхний уровень (SCADA / MES)**: Сервис предоставляет REST API для инициализации дашборда и открывает постоянный канал Server-Sent Events (SSE) для мгновенного обновления интерфейса оператора ОТК при обнаружении брака.
 
-Интеграция со смежным микросервисом: [Репозиторий сервиса машинного зрения](https://github.com/Diana-debug-ship-it/Defect-Control-System-Demo.CV-service)
+Интеграция с модулем распознавания брака: [Репозиторий сервиса машинного зрения](https://github.com/Diana-debug-ship-it/Defect-Control-System-Demo.CV-service)
+Операторская панель: [Репозиторий фронтенда на React](https://github.com/Diana-debug-ship-it/Defect-Control-System-Demo.frontend)
 
 ---
 
