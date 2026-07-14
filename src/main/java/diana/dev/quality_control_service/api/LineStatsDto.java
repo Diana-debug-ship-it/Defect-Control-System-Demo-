@@ -6,6 +6,7 @@ import lombok.Builder;
 public record LineStatsDto(
         Long totalChecked,
         Long totalDefects,
+        Long totalPassed,
         Double defectRate
 ) {
 }

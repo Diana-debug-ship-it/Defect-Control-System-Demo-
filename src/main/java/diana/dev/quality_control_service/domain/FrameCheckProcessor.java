@@ -25,6 +25,7 @@ public class FrameCheckProcessor {
 
         Long totalChecked = repository.count();
         Long totalDefects = repository.countByStatus(QualityStatus.DEFECT);
+        Long totalPassed = totalChecked - totalDefects;
 
         Double defectRate = totalChecked > 0
                 ? ((double) totalDefects/totalChecked) * 100
@@ -32,6 +33,7 @@ public class FrameCheckProcessor {
 
         return LineStatsDto.builder()
                 .totalDefects(totalDefects)
+                .totalPassed(totalPassed)
                 .totalChecked(totalChecked)
                 .defectRate(defectRate)
                 .build();
